@@ -18,10 +18,16 @@
       }
 
       var host = window.document.location.host.replace(/:.*/, '');
-      var ws = new WebSocket('ws://'
-                              + host
-                            //  + ":3000" // if localhost
-                             );
+      var protocol = 'wss:'
+      var port = '';
+
+      if (location.protocol != 'https:')
+        protocol = 'ws:';
+
+      if (host == 'localhost' || host == '127.0.0.1')
+        port = ':3000';
+
+      var ws = new WebSocket(protocol + host + port);
       ws.onmessage = function (event) {
         updateStats(JSON.parse(event.data));
       };
