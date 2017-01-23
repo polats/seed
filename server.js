@@ -1,13 +1,26 @@
+var express = require('express');
+var path = require('path');
+var app = express();
+var server = require('http').createServer();
+
+app.use(express.static(path.join(__dirname, '/public')));
+
 const WebSocket = require('uws');
 
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ port: 3000 });
 
-wss.on('connection', function connection(ws) {
-  ws.on('message', function incoming(message) {
-    console.log('received: %s', message);
+wss.on('connection', function (ws) {
+  var id = setInterval(function () {
+    ws.send(JSON.stringify(process.memoryUsage()), function () { /* ignore errors */ });
+  }, 100);
+  console.log('started client interval');
+  ws.on('close', function () {
+    console.log('stopping client interval');
+    clearInterval(id);
   });
+});
 
-  console.log('connection!');
-
-  ws.send('HI!');
+server.on('request', app);
+server.listen(8080, function () {
+  console.log('Listening on http://localhost:8080');
 });
