@@ -1,14 +1,13 @@
+var WebSocketServer = require('uws').Server;
 var express = require('express');
 var path = require('path');
 var app = express();
 var server = require('http').createServer();
+var gameport = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, '/public')));
 
-const WebSocket = require('uws');
-
-const wss = new WebSocket.Server({ port: 3000 });
-
+var wss = new WebSocketServer({server: server});
 wss.on('connection', function (ws) {
   var id = setInterval(function () {
     ws.send(JSON.stringify(process.memoryUsage()), function () { /* ignore errors */ });
@@ -21,6 +20,6 @@ wss.on('connection', function (ws) {
 });
 
 server.on('request', app);
-server.listen(8080, function () {
-  console.log('Listening on http://localhost:8080');
+server.listen(gameport, function () {
+  console.log('Listening on http://localhost:' + gameport);
 });
