@@ -58,7 +58,17 @@
 
     game_server._onMessage = function(client,message) {
 
+        var rotation = JSON.parse(message);
+
+        //the client should be in a game, so
+        //we can tell that game to handle the input
+    if(client && client.game && client.game.gamecore) {
+        client.game.gamecore.handle_server_rotation(client, rotation);
+    }
+
+
             //Cut the message up into sub components
+        /*
         var message_parts = message.split('.');
             //The first is always the type of message
         var message_type = message_parts[0];
@@ -66,6 +76,7 @@
         var other_client =
             (client.game.player_host.userid == client.userid) ?
                 client.game.player_client : client.game.player_host;
+
 
         if(message_type == 'i') {
                 //Input handler will forward this
@@ -78,6 +89,7 @@
         } else if(message_type == 'l') {    //A client is asking for lag simulation
             this.fake_latency = parseFloat(message_parts[1]);
         }
+        */
 
     }; //game_server.onMessage
 
@@ -189,14 +201,20 @@
             //the host already knows they are hosting,
             //tell the other client they are joining a game
             //s=server message, j=you are joining, send them the host id
-        game.player_client.send('s.j.' + game.player_host.userid);
+
+
+        // game.player_client.send('s.j.' + game.player_host.userid);
         game.player_client.game = game;
 
             //now we tell both that the game is ready to start
             //clients will reset their positions in this case.
+        /*
         game.player_client.send('s.r.'+ String(game.gamecore.local_time).replace('.','-'));
         game.player_host.send('s.r.'+ String(game.gamecore.local_time).replace('.','-'));
+        */
 
+        game.player_client.send('c');
+        game.player_host.send('h');
             //set this flag, so that the update loop can run it.
         game.active = true;
 

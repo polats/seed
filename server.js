@@ -46,7 +46,7 @@ wss.on('connection', function (client) {
     client.userid = UUID();
 
         //tell the player they connected, giving them their id
-    client.emit('onconnected', { id: client.userid } );
+    // client.emit('onconnected', { id: client.userid } );
 
         //now we can find them a game to play with someone.
         //if no game exists with someone waiting, they create one and wait.

@@ -208,6 +208,7 @@ game_core.prototype.v_lerp = function(v,tv,t) { return { x: this.lerp(v.x, tv.x,
 
             //Set up initial values for our state information
         this.pos = { x:0, y:0 };
+        this.rot = { w:0, x:0, y:0, z:0};
         this.size = { x:16, y:16, hx:8, hy:8 };
         this.state = 'not-connected';
         this.color = 'rgba(255,255,255,0.1)';
@@ -426,6 +427,7 @@ game_core.prototype.server_update_physics = function() {
     //on the server side
 game_core.prototype.server_update = function(){
 
+    /*
         //Update the state of our local clock to match the timer
     this.server_time = this.local_time;
 
@@ -436,6 +438,13 @@ game_core.prototype.server_update = function(){
         his : this.players.self.last_input_seq,     //'host input sequence', the last input we processed for the host
         cis : this.players.other.last_input_seq,    //'client input sequence', the last input we processed for the client
         t   : this.server_time                      // our current local time on the server
+    };
+    */
+
+        //Make a snapshot of the current state, for updating the clients
+    this.laststate = {
+        hr  : this.players.self.rot,                //'host rotation', the game creators rotation
+        cr  : this.players.other.rot                //'client rotation', the person that joined, their rotation
     };
 
         //Send the snapshot to the 'host' player
@@ -452,6 +461,16 @@ game_core.prototype.server_update = function(){
 
 }; //game_core.server_update
 
+game_core.prototype.handle_server_rotation = function(client, message) {
+
+  //Fetch which client this refers to out of the two
+    var player_client =
+      (client.userid == this.players.self.instance.userid) ?
+          this.players.self : this.players.other;
+
+    player_client.rot = message;
+
+};
 
 game_core.prototype.handle_server_input = function(client, input, input_time, input_seq) {
 
