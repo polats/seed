@@ -1,31 +1,51 @@
-<!DOCTYPE html>
-<html>
-	<head>
-
-		<title> Real time multi-player games with HTML5</title>
-
-			<!-- Load style sheet -->
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | leaf</title>
+    <link rel="stylesheet" href="TemplateData/style.css">
 		<link href="index.css" media="screen" rel="stylesheet" type="text/css">
-
-	<!-- Library code -->
-
-	 		<!-- Load the GUI rendering library code. -->
-		<script type="text/javascript" src="lib/dat.gui.min.js"></script>
-			<!-- Load the keyboard specific code -->
-		<script type="text/javascript" src="lib/keyboard.js"></script>
-
-	<!-- Game code -->
-
-	 		<!-- Load the common game code. -->
-		<script type="text/javascript" src="game.core.js"></script>
-			<!-- Finally, Load the game client code. -->
-		<script type="text/javascript" src="client.js"></script>
-
-	</head>
-
-	<body>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico" />
+    <script src="TemplateData/UnityProgress.js"></script>
+  </head>
+  <body class="template">
+    <div class="template-wrap clear">
+      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="600px" width="960px"></canvas>
+      <br>
+      <div class="logo"></div>
+      <div class="fullscreen"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" /></div>
+      <div class="title">leaf</div>
+    </div>
 		<canvas id="viewport">
 		</canvas>
-	</body>
+    <script type='text/javascript'>
+  var Module = {
+    TOTAL_MEMORY: 268435456,
+    errorhandler: null,			// arguments: err, url, line. This function must return 'true' if the error is handled, otherwise 'false'
+    compatibilitycheck: null,
+    backgroundColor: "#222C36",
+    splashStyle: "Light",
+    dataUrl: "Release/public.data",
+    codeUrl: "Release/public.js",
+    asmUrl: "Release/public.asm.js",
+    memUrl: "Release/public.mem",
+  };
+</script>
+<script src="Release/UnityLoader.js"></script>
 
+
+<!-- Load the GUI rendering library code. -->
+<script type="text/javascript" src="lib/dat.gui.min.js"></script>
+<!-- Load the keyboard specific code -->
+<script type="text/javascript" src="lib/keyboard.js"></script>
+
+<!-- Game code -->
+
+<!-- Load the common game code. -->
+<script type="text/javascript" src="game.core.js"></script>
+<!-- Finally, Load the game client code. -->
+<script type="text/javascript" src="client.js"></script>
+
+  </body>
 </html>

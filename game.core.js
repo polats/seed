@@ -44,6 +44,17 @@ var frame_time = 60/1000; // run the local game at 16ms/ 60hz
 
 }() );
 
+// Unity messages that it's ready
+function UnityLoaded()
+{
+    game.unityready = true;
+}
+
+function UpdateRotation(rotation)
+{
+    game.socket.send(rotation);
+}
+
         //Now the main game class. This gets created on
         //both server and client. Server creates one for
         //each game that is hosted, and client creates one
@@ -53,11 +64,13 @@ var frame_time = 60/1000; // run the local game at 16ms/ 60hz
 
     var game_core = function(game_instance){
 
+        this.hostdetermined = false;
             //Store the instance, if any
         this.instance = game_instance;
             //Store a flag if we are the server
         this.server = this.instance !== undefined;
 
+        this.unityready = false;
             //Used in collision etc.
         this.world = {
             width : 720,
@@ -120,10 +133,10 @@ var frame_time = 60/1000; // run the local game at 16ms/ 60hz
 
             //Start a physics loop, this is separate to the rendering
             //as this happens at a fixed frequency
-        this.create_physics_simulation();
+        // this.create_physics_simulation();
 
             //Start a fast paced timer for measuring time easier
-        this.create_timer();
+        // this.create_timer();
 
             //Client specific initialisation
         if(!this.server) {
@@ -142,7 +155,7 @@ var frame_time = 60/1000; // run the local game at 16ms/ 60hz
             this.client_connect_to_server();
 
                 //We start pinging the server to determine latency
-            this.client_create_ping_timer();
+            //  this.client_create_ping_timer();
 
                 //Set their colors from the storage or locally
             this.color = localStorage.getItem('color') || '#cc8822' ;
@@ -742,6 +755,22 @@ game_core.prototype.client_onserverupdate_recieved = function(data){
         var player_client = this.players.self.host ?  this.players.other : this.players.self;
         var this_player = this.players.self;
 
+        if (game.unityready)
+        {
+          if (!game.hostdetermined)
+          {
+            if (game.server)
+            SendMessage('WebsocketManager','ProcessMessage','c');
+            else
+            SendMessage('WebsocketManager','ProcessMessage','h');
+
+            game.hostdetermined = true;
+          }
+
+          SendMessage('WebsocketManager','ProcessMessage',JSON.stringify(data));
+        }
+        /*
+
             //Store the server time (this is offset by the latency in the network, by the time we get it)
         this.server_time = data.t;
             //Update our local offset time from the last server update
@@ -785,9 +814,9 @@ game_core.prototype.client_onserverupdate_recieved = function(data){
 
                 //Handle the latest positions from the server
                 //and make sure to correct our local predictions, making the server have final say.
-            this.client_process_net_prediction_correction();
-
+           this.client_process_net_prediction_correction();
         } //non naive
+        */
 
 }; //game_core.client_onserverupdate_recieved
 
@@ -831,6 +860,8 @@ game_core.prototype.client_update_physics = function() {
 
 game_core.prototype.client_update = function() {
 
+    /*
+
         //Clear the screen area
     this.ctx.clearRect(0,0,720,480);
 
@@ -871,6 +902,7 @@ game_core.prototype.client_update = function() {
 
         //Work out the fps average
     this.client_refresh_fps();
+    */
 
 }; //game_core.update_client
 
@@ -1171,7 +1203,7 @@ game_core.prototype.client_connect_to_server = function() {
             //Store a local reference to our connection to the server
           var host = window.document.location.host.replace(/:.*/, '');
           var protocol = 'wss:'
-          var port = '';
+          var port = ':3000';
 
           if (location.protocol != 'https:')
             protocol = 'ws:';
