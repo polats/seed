@@ -1,51 +1,41 @@
-<!doctype html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | leaf</title>
-    <link rel="stylesheet" href="TemplateData/style.css">
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<title> Real time multi-player games with HTML5</title>
+
+			<!-- Load style sheet -->
 		<link href="index.css" media="screen" rel="stylesheet" type="text/css">
-    <link rel="shortcut icon" href="TemplateData/favicon.ico" />
-    <script src="TemplateData/UnityProgress.js"></script>
-  </head>
-  <body class="template">
-    <div class="template-wrap clear">
-      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="600px" width="960px"></canvas>
-      <br>
-      <div class="logo"></div>
-      <div class="fullscreen"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" /></div>
-      <div class="title">leaf</div>
-    </div>
-		<canvas id="viewport">
-		</canvas>
-    <script type='text/javascript'>
-  var Module = {
-    TOTAL_MEMORY: 268435456,
-    errorhandler: null,			// arguments: err, url, line. This function must return 'true' if the error is handled, otherwise 'false'
-    compatibilitycheck: null,
-    backgroundColor: "#222C36",
-    splashStyle: "Light",
-    dataUrl: "Release/public.data",
-    codeUrl: "Release/public.js",
-    asmUrl: "Release/public.asm.js",
-    memUrl: "Release/public.mem",
-  };
-</script>
-<script src="Release/UnityLoader.js"></script>
 
 
-<!-- Load the GUI rendering library code. -->
-<script type="text/javascript" src="lib/dat.gui.min.js"></script>
-<!-- Load the keyboard specific code -->
-<script type="text/javascript" src="lib/keyboard.js"></script>
+  <!-- Rendering Code -->
+    <script src="http://www.babylonjs.com/hand.minified-1.2.js"></script>
+    <script src="http://www.babylonjs.com/cannon.js"></script>
+    <script src="http://www.babylonjs.com/oimo.js"></script>
+    <script src="http://www.babylonjs.com/babylon.js"></script>
 
-<!-- Game code -->
+	<!-- Library code -->
 
-<!-- Load the common game code. -->
-<script type="text/javascript" src="game.core.js"></script>
-<!-- Finally, Load the game client code. -->
-<script type="text/javascript" src="client.js"></script>
+	 		<!-- Load the GUI rendering library code. -->
+		<script type="text/javascript" src="lib/dat.gui.min.js"></script>
+			<!-- Load the keyboard specific code -->
+		<script type="text/javascript" src="lib/keyboard.js"></script>
 
-  </body>
+	<!-- Game code -->
+
+	 		<!-- Load the common game code. -->
+		<script type="text/javascript" src="game.core.js"></script>
+			<!-- Finally, Load the game client code. -->
+		<script type="text/javascript" src="client.js"></script>
+
+	</head>
+
+	<body>
+    <div id="canvasZone">
+        <canvas id="renderCanvas"></canvas>
+        <!-- <canvas id="viewport"></canvas> -->
+        <script type="text/javascript" src="lib/babyloncode.js"></script>
+
+	</body>
+
 </html>
