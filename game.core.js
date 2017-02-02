@@ -17,7 +17,7 @@
     // fixes from Paul Irish and Tino Zijdel
 
 var frame_time = 60/1000; // run the local game at 16ms/ 60hz
-// if('undefined' != typeof(global)) frame_time = 45; //on server we run at 45ms, 22hz
+if('undefined' != typeof(global)) frame_time = 45; //on server we run at 45ms, 22hz
 
 ( function () {
 
@@ -44,17 +44,6 @@ var frame_time = 60/1000; // run the local game at 16ms/ 60hz
 
 }() );
 
-// Unity messages that it's ready
-function UnityLoaded()
-{
-    game.unityready = true;
-}
-
-function UpdateRotation(rotation)
-{
-    game.socket.send(rotation);
-}
-
         //Now the main game class. This gets created on
         //both server and client. Server creates one for
         //each game that is hosted, and client creates one
@@ -64,13 +53,11 @@ function UpdateRotation(rotation)
 
     var game_core = function(game_instance){
 
-        this.hostdetermined = false;
             //Store the instance, if any
         this.instance = game_instance;
             //Store a flag if we are the server
         this.server = this.instance !== undefined;
 
-        this.unityready = false;
             //Used in collision etc.
         this.world = {
             width : 720,
@@ -121,7 +108,7 @@ function UpdateRotation(rotation)
         }
 
             //The speed at which the clients move.
-        this.playerspeed = 240;
+        this.playerspeed = 120;
 
             //Set up some physics integration values
         this._pdt = 0.0001;                 //The physics update delta time
@@ -133,10 +120,10 @@ function UpdateRotation(rotation)
 
             //Start a physics loop, this is separate to the rendering
             //as this happens at a fixed frequency
-        // this.create_physics_simulation();
+        this.create_physics_simulation();
 
             //Start a fast paced timer for measuring time easier
-        // this.create_timer();
+        this.create_timer();
 
             //Client specific initialisation
         if(!this.server) {
@@ -155,7 +142,7 @@ function UpdateRotation(rotation)
             this.client_connect_to_server();
 
                 //We start pinging the server to determine latency
-            //  this.client_create_ping_timer();
+            this.client_create_ping_timer();
 
                 //Set their colors from the storage or locally
             this.color = localStorage.getItem('color') || '#cc8822' ;
@@ -221,7 +208,6 @@ game_core.prototype.v_lerp = function(v,tv,t) { return { x: this.lerp(v.x, tv.x,
 
             //Set up initial values for our state information
         this.pos = { x:0, y:0 };
-        this.rot = { w:0, x:0, y:0, z:0};
         this.size = { x:16, y:16, hx:8, hy:8 };
         this.state = 'not-connected';
         this.color = 'rgba(255,255,255,0.1)';
@@ -341,7 +327,6 @@ game_core.prototype.process_input = function( player ) {
     var x_dir = 0;
     var y_dir = 0;
     var ic = player.inputs.length;
-
     if(ic) {
         for(var j = 0; j < ic; ++j) {
                 //don't process ones we already have simulated locally
@@ -372,10 +357,9 @@ game_core.prototype.process_input = function( player ) {
     var resulting_vector = this.physics_movement_vector_from_direction(x_dir,y_dir);
     if(player.inputs.length) {
         //we can now clear the array since these have been processed
+
         player.last_input_time = player.inputs[ic-1].time;
         player.last_input_seq = player.inputs[ic-1].seq;
-
-      //  console.log(player.last_input_time + ", " + player.last_input_seq);
     }
 
         //give it back
@@ -440,7 +424,6 @@ game_core.prototype.server_update_physics = function() {
     //on the server side
 game_core.prototype.server_update = function(){
 
-    /*
         //Update the state of our local clock to match the timer
     this.server_time = this.local_time;
 
@@ -452,38 +435,19 @@ game_core.prototype.server_update = function(){
         cis : this.players.other.last_input_seq,    //'client input sequence', the last input we processed for the client
         t   : this.server_time                      // our current local time on the server
     };
-    */
-
-        //Make a snapshot of the current state, for updating the clients
-    this.laststate = {
-        hr  : this.players.self.rot,                //'host rotation', the game creators rotation
-        cr  : this.players.other.rot                //'client rotation', the person that joined, their rotation
-    };
 
         //Send the snapshot to the 'host' player
     if(this.players.self.instance) {
-      //  this.players.self.instance.emit( 'onserverupdate', this.laststate );
-      this.players.self.instance.send(JSON.stringify(this.laststate));
+        this.players.self.instance.emit( 'onserverupdate', this.laststate );
     }
 
         //Send the snapshot to the 'client' player
     if(this.players.other.instance) {
-      //  this.players.other.instance.emit( 'onserverupdate', this.laststate );
-      this.players.other.instance.send(JSON.stringify(this.laststate ));
+        this.players.other.instance.emit( 'onserverupdate', this.laststate );
     }
 
 }; //game_core.server_update
 
-game_core.prototype.handle_server_rotation = function(client, message) {
-
-  //Fetch which client this refers to out of the two
-    var player_client =
-      (client.userid == this.players.self.instance.userid) ?
-          this.players.self : this.players.other;
-
-    player_client.rot = message;
-
-};
 
 game_core.prototype.handle_server_input = function(client, input, input_time, input_seq) {
 
@@ -492,7 +456,6 @@ game_core.prototype.handle_server_input = function(client, input, input_time, in
         (client.userid == this.players.self.instance.userid) ?
             this.players.self : this.players.other;
 
-   // console.log(input);
         //Store the input on the player instance for processing in the physics loop
    player_client.inputs.push({inputs:input, time:input_time, seq:input_seq});
 
@@ -516,6 +479,7 @@ game_core.prototype.client_handle_input = function(){
         //This takes input from the client and keeps a record,
         //It also sends the input information to the server immediately
         //as it is pressed. It also tags each input with a sequence number.
+
     var x_dir = 0;
     var y_dir = 0;
     var input = [];
@@ -747,29 +711,12 @@ game_core.prototype.client_process_net_updates = function() {
 
 game_core.prototype.client_onserverupdate_recieved = function(data){
 
-
             //Lets clarify the information we have locally. One of the players is 'hosting' and
             //the other is a joined in client, so we name these host and client for making sure
             //the positions we get from the server are mapped onto the correct local sprites
         var player_host = this.players.self.host ?  this.players.self : this.players.other;
         var player_client = this.players.self.host ?  this.players.other : this.players.self;
         var this_player = this.players.self;
-
-        if (game.unityready)
-        {
-          if (!game.hostdetermined)
-          {
-            if (game.server)
-            SendMessage('WebsocketManager','ProcessMessage','c');
-            else
-            SendMessage('WebsocketManager','ProcessMessage','h');
-
-            game.hostdetermined = true;
-          }
-
-          SendMessage('WebsocketManager','ProcessMessage',JSON.stringify(data));
-        }
-        /*
 
             //Store the server time (this is offset by the latency in the network, by the time we get it)
         this.server_time = data.t;
@@ -814,9 +761,9 @@ game_core.prototype.client_onserverupdate_recieved = function(data){
 
                 //Handle the latest positions from the server
                 //and make sure to correct our local predictions, making the server have final say.
-           this.client_process_net_prediction_correction();
+            this.client_process_net_prediction_correction();
+
         } //non naive
-        */
 
 }; //game_core.client_onserverupdate_recieved
 
@@ -860,8 +807,6 @@ game_core.prototype.client_update_physics = function() {
 
 game_core.prototype.client_update = function() {
 
-    /*
-
         //Clear the screen area
     this.ctx.clearRect(0,0,720,480);
 
@@ -902,7 +847,6 @@ game_core.prototype.client_update = function() {
 
         //Work out the fps average
     this.client_refresh_fps();
-    */
 
 }; //game_core.update_client
 
@@ -1142,46 +1086,39 @@ game_core.prototype.client_onping = function(data) {
 
 game_core.prototype.client_onnetmessage = function(data) {
 
-    if (data.data[0] != '{')
-    {
-        var commands = data.data.split('.');
-        var command = commands[0];
-        var subcommand = commands[1] || null;
-        var commanddata = commands[2] || null;
+    var commands = data.split('.');
+    var command = commands[0];
+    var subcommand = commands[1] || null;
+    var commanddata = commands[2] || null;
 
-        switch(command) {
-            case 's': //server message
+    switch(command) {
+        case 's': //server message
 
-                switch(subcommand) {
+            switch(subcommand) {
 
-                    case 'h' : //host a game requested
-                        this.client_onhostgame(commanddata); break;
+                case 'h' : //host a game requested
+                    this.client_onhostgame(commanddata); break;
 
-                    case 'j' : //join a game requested
-                        this.client_onjoingame(commanddata); break;
+                case 'j' : //join a game requested
+                    this.client_onjoingame(commanddata); break;
 
-                    case 'r' : //ready a game requested
-                        this.client_onreadygame(commanddata); break;
+                case 'r' : //ready a game requested
+                    this.client_onreadygame(commanddata); break;
 
-                    case 'e' : //end game requested
-                        this.client_ondisconnect(commanddata); break;
+                case 'e' : //end game requested
+                    this.client_ondisconnect(commanddata); break;
 
-                    case 'p' : //server ping
-                        this.client_onping(commanddata); break;
+                case 'p' : //server ping
+                    this.client_onping(commanddata); break;
 
-                    case 'c' : //other player changed colors
-                        this.client_on_otherclientcolorchange(commanddata); break;
+                case 'c' : //other player changed colors
+                    this.client_on_otherclientcolorchange(commanddata); break;
 
-                } //subcommand
+            } //subcommand
 
-            break; //'s'
-        } //command
-      }
+        break; //'s'
+    } //command
 
-      else
-      {
-        this.client_onserverupdate_recieved(JSON.parse(data.data));
-      }
 }; //client_onnetmessage
 
 game_core.prototype.client_ondisconnect = function(data) {
@@ -1201,28 +1138,9 @@ game_core.prototype.client_ondisconnect = function(data) {
 game_core.prototype.client_connect_to_server = function() {
 
             //Store a local reference to our connection to the server
-          var host = window.document.location.host.replace(/:.*/, '');
-          var protocol = 'wss:'
-          var port = ':3000';
+        this.socket = io.connect();
 
-          if (location.protocol != 'https:')
-            protocol = 'ws:';
-
-          if (host == 'localhost' || host == '127.0.0.1')
-            port = ':3000';
-
-         this.socket = new WebSocket(protocol + host + port);
-
-         this.socket.onerror = this.client_ondisconnect.bind(this);
-         this.socket.onopen = function (event) {
-           this.players.self.state = 'connecting';
-         }.bind(this);
-         this.socket.onclose = this.client_ondisconnect.bind(this);
-
-         this.socket.onmessage = this.client_onnetmessage.bind(this);
-         // this.socket.onmessage = this.client_onserverupdate_recieved.bind(this);
-         /*
-                     //When we connect, we are not 'connected' until we have a server id
+            //When we connect, we are not 'connected' until we have a server id
             //and are placed in a game by the server. The server sends us a message for that.
         this.socket.on('connect', function(){
             this.players.self.state = 'connecting';
@@ -1238,7 +1156,7 @@ game_core.prototype.client_connect_to_server = function() {
         this.socket.on('error', this.client_ondisconnect.bind(this));
             //On message from the server, we parse the commands and send it to the handlers
         this.socket.on('message', this.client_onnetmessage.bind(this));
-          */
+
 }; //game_core.client_connect_to_server
 
 
