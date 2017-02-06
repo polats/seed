@@ -1,10 +1,11 @@
 {
   "name": "seed",
-  "description": "Boilerplate for a whole multiplayer VR world hosted on Gomix",
+  "description": "Boilerplate for a multiplayer VR web app hosted on Gomix",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "start": "budo --live --verbose --port 3000 --open",
+    "start": "node index.js",
+    "dev": "budo --live --verbose --port 3000 --open",
     "deploy": "ghpages",
     "ghpages": "ghpages"
   },
@@ -15,6 +16,10 @@
   "devDependencies": {
     "budo": "^7.0.0",
     "ghpages": "0.0.3"
+  },
+  "dependencies": {
+    "socket.io": "^1.7.2",
+    "socket.io-client": "^1.7.2"
   },
   "keywords": [
     "aframe",
