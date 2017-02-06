@@ -1,18 +1,27 @@
 {
-  "name": "realtime-multiplayer-in-html5",
-  "author" : "Sven Bergström",
-  "description": "An article and demo explaining how multiplayer games work, with a demo in HTML5 using socket.io, node.js and canvas.",
+  "name": "seed",
+  "description": "Boilerplate for a whole multiplayer VR world hosted on Gomix",
+  "version": "0.0.1",
   "license": "MIT",
-  "version": "1.0.0",
-  "dependencies": {
-    "express": "^4.14.0",
-    "socket.io": "latest",
-    "node-uuid": "1.3.3"
-  },
-  "engine": {
-    "node": "0.10.x"
-  },
   "scripts": {
-    "start": "node app.js"
-  }
+    "start": "budo --live --verbose --port 3000 --open",
+    "deploy": "ghpages",
+    "ghpages": "ghpages"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polats/seed.git"
+  },
+  "devDependencies": {
+    "budo": "^7.0.0",
+    "ghpages": "0.0.3"
+  },
+  "keywords": [
+    "aframe",
+    "aframe-example",
+    "aframe-boilerplate",
+    "aframe-scene",
+    "webvr",
+    "vr"
+  ]
 }
