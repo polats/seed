@@ -28,7 +28,7 @@ AFRAME.registerSystem('gomix-socket', {
     // unless the user overrides url, gomix-socket will connect to the socket in the same URL but on port 3000
     if (!url) {
       var currentLocation = window.location;
-      url = currentLocation.hostname + ":" + GOMIX_PORT;
+      url = currentLocation.protocol + "//" + currentLocation.hostname + ":" + GOMIX_PORT;
     }
 
     console.log("connecting to : " + url);
