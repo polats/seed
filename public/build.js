@@ -3,8 +3,6 @@ require('aframe');
 require('../index.js');
 
 },{"../index.js":2,"aframe":3}],2:[function(require,module,exports){
-const GOMIX_PORT = 3000;
-
 var debug = AFRAME.utils.debug;
 var io = require('socket.io-client');
 
@@ -25,10 +23,10 @@ AFRAME.registerSystem('gomix-socket', {
     var sceneEl = this.sceneEl;
     var url = sceneEl.getAttribute('gomix-socket').url;
 
-    // unless the user overrides url, gomix-socket will connect to the socket in the same URL but on port 3000
+    // unless the user overrides url, gomix-socket will connect to the socket in the same URL
     if (!url) {
       var currentLocation = window.location;
-      url = currentLocation.protocol + "//" + currentLocation.hostname + ":" + GOMIX_PORT;
+      url = currentLocation.protocol + "//" + currentLocation.hostname + ":" + currentLocation.port;
     }
 
     console.log("connecting to : " + url);
