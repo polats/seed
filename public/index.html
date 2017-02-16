@@ -5,17 +5,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/0.5.0/aframe.min.js"></script>
 
     <!-- use this code for gomix : build.js hosted on github via rawgit -->
-    <!--
     <script src="https://rawgit.com/polats/seed/master/public/build.js"></script>
-    -->
 
     <!-- use this when developing locally -->
+    <!--
     <script src="./build.js"></script>
-    
+    -->
+
   </head>
   <body>
 
+    <!-- use this when hosted on gomix. gomix-socket will default to current URL -->
     <a-scene gomix-socket>
+
+      <!-- use this when developing locally -->
+      <!--
+      <a-scene gomix-socket="url: http://localhost:3000">
+    -->
       <a-entity camera look-controls wasd-controls
                 gomix-socket="send: geometry, material, position, rotation"
                 geometry="primitive: box; depth: 0.3; height: 0.3; width: 0.3"
