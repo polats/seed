@@ -3,7 +3,7 @@ var
 
   io              = require('socket.io'),
   express         = require('express'),
-  path            = require('path'),  
+  path            = require('path'),
   http            = require('http'),
   app             = express(),
   server          = http.createServer(app);

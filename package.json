@@ -4,8 +4,9 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
-    "dev": "budo --live --verbose --port 3000 --open",
+    "start": "node server.js",
+    "build": "browserify src/index.js -o public/build.js",
+    "dev": "budo src/index.js:public/build.js --port 8000 --live --open",
     "deploy": "ghpages",
     "ghpages": "ghpages"
   },
@@ -20,7 +21,8 @@
   "dependencies": {
     "express": "^4.14.1",
     "socket.io": "^1.7.2",
-    "socket.io-client": "^1.7.2"
+    "socket.io-client": "^1.7.2",
+    "browserify": "^12.0.1"
   },
   "keywords": [
     "aframe",
