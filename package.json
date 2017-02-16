@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "browserify src/index.js -o public/build.js",
-    "dev": "budo src/index.js:public/build.js --port 8000 --live --open",
+    "dev": "budo src/budo-index.js:public/build.js --port 8000 --live --open --dir public",
     "deploy": "ghpages",
     "ghpages": "ghpages"
   },
@@ -16,7 +16,8 @@
   },
   "devDependencies": {
     "budo": "^7.0.0",
-    "ghpages": "0.0.3"
+    "ghpages": "0.0.3",
+    "aframe": "^0.5.0"
   },
   "dependencies": {
     "express": "^4.14.1",

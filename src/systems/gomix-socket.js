@@ -62,7 +62,7 @@ AFRAME.registerSystem('gomix-socket', {
         id: el.getAttribute('id'),
         parentId: el.parentNode.getAttribute('id'),
         components: sendComponents.map(function getAttribute (componentName) {
-          return [componentName, el.getComputedAttribute(componentName)];
+          return [componentName, el.getAttribute(componentName)];
         })
       };
     });
