@@ -3,7 +3,14 @@
     <title>A-Frame Gomix Socket Component - Basic</title>
     <meta name="description" content="Basic example for Gomix Socket component."></meta>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/0.5.0/aframe.min.js"></script>
-    <script src="../build.js"></script>
+
+    <!-- use this code for gomix : build.js hosted on github via rawgit -->
+    <script src="https://rawgit.com/polats/seed/master/public/build.js"></script>
+
+    <!-- use this when developing locally -->
+    <!--
+    <script src="./build.js"></script>
+    -->
   </head>
   <body>
 
@@ -13,13 +20,6 @@
                 geometry="primitive: box; depth: 0.3; height: 0.3; width: 0.3"
                 material="color: #222"
                 position="0 1.8 5"></a-entity>
-
-      <a-entity gomix-socket="send: position" follow="[camera]">
-        <a-entity gomix-socket="send: geometry, material, position"
-                  geometry="primitive: cone; height: 1.5; radiusTop: 0.1; radiusBottom: 0.4"
-                  material="color: #222"
-                  position="0 -1 0"></a-entity>
-      </a-entity>
 
       <a-sphere color="#645FCE" radius="0.2" position="-3 0 2"></a-sphere>
       <a-sphere color="#69E9F5" position="3 1 -7"></a-sphere>
