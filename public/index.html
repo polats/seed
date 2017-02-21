@@ -1,7 +1,7 @@
 <html>
   <head>
-    <title>A-Frame Gomix Socket Component - Basic</title>
-    <meta name="description" content="Basic example for Gomix Socket component."></meta>
+    <title>budokai.io</title>
+    <meta name="description" content="Multiplayer VR Game"></meta>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/0.5.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.2.6/dist/aframe-extras.min.js"></script>
     <!-- use this code for gomix : build.js hosted on github via rawgit -->
@@ -149,10 +149,19 @@
     </script>
 
   </head>
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-5181889143002963",
+      enable_page_level_ads: true
+    });
+  </script>
+    
   <body>
 
     <!-- use this when hosted on gomix. gomix-socket will default to current URL -->
-    <a-scene gomix-socket rain-of-entities force-float="selector: [force-pushable]">
+    <a-scene gomix-socket force-float="selector: [force-pushable]">
 
       <!-- use this when developing locally -->
       <!--
@@ -167,21 +176,31 @@
                       wasd-controls-enabled="false" look-controls-enabled="false"></a-camera>
           </a-entity>
         </a-entity>
-        -->
 
-        <a-box
+        <a-assets>
+          <img id="texture" src="http://mac.h-cdn.co/assets/15/13/980x490/landscape-1427654703-eye-color.jpg" crossorigin>
+        </a-assets>
+
+      -->
+
+
+
+        <a-cylinder
              force-pushable
              universal-controls
              gomix-socket="send: geometry, material, position, rotation"
              kinematic-body
-             material="color: #222"
+             depth=0.1
+             radius="1.5" height="1" theta-start="100"
+             theta-length="160" side="single" open-ended="true"
+             material="color: #FFFFFF"
              position="0 3 5">
           <a-entity camera></a-entity>
           <a-entity cursor="maxDistance: 75"
                     position="0 0 -1"
                     geometry="primitive: circle; radius: 0.01; segments: 4;"
                     material="color: #FF4444; shader: flat"></a-entity>
-      </a-box>
+      </a-cylinder>
 
       <a-sphere color="#645FCE" radius="0.2" position="-3 0 2"></a-sphere>
       <a-sphere color="#69E9F5" position="3 1 -7"></a-sphere>
