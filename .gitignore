@@ -39,3 +39,9 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+dist/bundle.js
+node_modules/
+yarn.lock
+*.trace
+.idea
