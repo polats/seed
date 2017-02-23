@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <title>A-Frame Soccer League</title>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+        <style>
+            html, body {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript" src="dist/bundle.js"></script>
+        <a-scene networked-physics>
+            <a-assets>
+                <a-asset-item id="car-obj" src="resources/models/modelt.obj"></a-asset-item>
+                <a-asset-item id="stadium" src="resources/models/stadium.gltf"></a-asset-item>
+                <a-asset-item id="ball" src="resources/images/football_equi.jpg"></a-asset-item>
+            </a-assets>
+
+            <!-- Camera -->
+            <a-entity camera position="0 15 40" look-controls></a-entity>
+
+            <a-entity light="type: ambient; color: #BBB"></a-entity>
+            <a-entity light="type: hemisphere; color: #33C; groundColor: #3C3; intensity: 0.2"></a-entity>
+            <!--<a-entity light="type: directional; color: #f296cc; intensity: 0.6" position="-0.5 1 1"></a-entity>-->
+
+            <a-entity cubemap="folder: resources/images/flame/; edgeLength: 1000"></a-entity>
+
+
+        </a-scene>
+    </body>
+</html>
