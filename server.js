@@ -1,25 +1,18 @@
-var
-  port            = process.env.PORT || 3000,
+'use strict';
 
-  io              = require('socket.io'),
-  express         = require('express'),
-  path            = require('path'),
-  http            = require('http'),
-  app             = express(),
-  server          = http.createServer(app);
+const express = require('express');
+const socketIO = require('socket.io');
+const path = require('path');
 
-app.use(express.static(path.join(__dirname, '/public')));
+const PORT = process.env.PORT || 3000;
+const INDEX = path.join(__dirname, './index.html');
 
-server.listen(port);
-var io = io.listen(server);
-
-console.log('Server started on port', port);
-
-//By default, we forward the / path to index.html automatically.
-app.get( '/', function( req, res ){
-console.log('trying to load %s', __dirname + '/index.html');
-res.sendfile( '/index.html' , { root:__dirname });
-});
+// define routes and socket
+const server = express();
+server.use('/', express.static(path.join(__dirname, '/public')));
+server.get('/', function(req, res) { res.sendFile(INDEX); });
+let requestHandler = server.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+const io = socketIO(requestHandler);
 
 io.on('connection', function (socket) {
   console.log('Connection received');
