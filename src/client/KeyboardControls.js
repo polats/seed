@@ -3,10 +3,16 @@ const EventEmitter = require('eventemitter3');
 // keyboard handling
 const keyCodeTable = {
     32: 'space',
-    37: 'left',
-    38: 'up',
-    39: 'right',
-    40: 'down'
+    37: 'right',
+    38: 'down',
+    39: 'left',
+    40: 'up',
+
+    // include wasd
+    87: 'down',
+    65: 'right',
+    68: 'left',
+    83: 'up'
 };
 
 /**

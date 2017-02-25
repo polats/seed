@@ -25,13 +25,16 @@ class Car extends PhysicalObject {
 
         let scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
         if (scene) {
+            let elroot = document.createElement('a-entity');
             let el = this.renderEl = document.createElement('a-entity');
-            scene.appendChild(el);
+            elroot.appendChild(el);
+            scene.appendChild(elroot);
             let p = this.position;
             let q = this.quaternion;
             el.setAttribute('position', `${p.x} ${p.y} ${p.z}`);
             el.object3D.quaternion.set(q.x, q.y, q.z, q.w);
-            el.setAttribute('material', 'color: red');
+            el.setAttribute('scale', '0.5 0.5 0.5');
+            el.setAttribute('material', 'color: white');
             el.setAttribute('obj-model', 'obj: #car-obj');
             el.setAttribute('game-object-id', this.id);
         }

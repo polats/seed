@@ -3,6 +3,7 @@
         <title>A-Frame Soccer League</title>
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+        <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.2.7/dist/aframe-extras.min.js"></script>
         <style>
             html, body {
                 padding: 0;
@@ -22,12 +23,18 @@
             <!-- Camera -->
             <a-entity camera position="0 15 40" look-controls></a-entity>
 
+            <a-ocean width="120" depth="80" density="40" opacity="1" position="0 -3 0"></a-ocean>
+            <a-sky color="#6A9DB0"></a-sky>
+
+            <a-light type="ambient" color="#ccc"></a-light>
+            <a-light color="#ddf" distance="100" intensity="0.4" type="point"></a-light>
+            <a-light color="#ddf" position="3 10 -10" distance="50" intensity="0.4" type="point"></a-light>
+            <!--
             <a-entity light="type: ambient; color: #BBB"></a-entity>
             <a-entity light="type: hemisphere; color: #33C; groundColor: #3C3; intensity: 0.2"></a-entity>
-            <!--<a-entity light="type: directional; color: #f296cc; intensity: 0.6" position="-0.5 1 1"></a-entity>-->
-
+            <a-entity light="type: directional; color: #f296cc; intensity: 0.6" position="-0.5 1 1"></a-entity>
             <a-entity cubemap="folder: resources/images/flame/; edgeLength: 1000"></a-entity>
-
+            -->
 
         </a-scene>
     </body>
