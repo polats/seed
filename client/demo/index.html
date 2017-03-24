@@ -3,7 +3,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>ProxyControls • Demo</title>
-    <script src="https://aframe.io/releases/0.4.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.0/dist/aframe-extras.min.js"></script>
     <script src="https://cdn.rawgit.com/polats/aframe-proxy-controls/87c0ccf6/dist/aframe-proxy-controls.min.js"></script>
     <script src="https://rawgit.com/polats/aframe-remote-phone-controls-component/master/dist/aframe-remote-phone-controls-component.min.js"></script>
@@ -54,21 +54,12 @@
                 kinematic-body
                 jump-ability
                 position="0 1 0"
-                universal-controls
-                sound="src: /demo/assets/321103__nsstudios__blip1.wav;
-                       on: gamepadbuttondown:0">
+                universal-controls>
                        <a-entity remote-phone-controls>
                       </a-entity>
       </a-entity>
 
       <a-cursor id="cursor" geometry="primitive: ring; radius-outer: 0.2; radius-inner: 0.06" material="color: lightblue" opacity="0.7"></a-cursor>
-
-      <a-assets>
-          <a-asset-item id="tree1" src="demo/assets/tree1.dae"></a-asset-item>
-          <a-asset-item id="tree2" src="demo/assets/tree2.dae"></a-asset-item>
-          <a-asset-item id="roomObj" src="demo/assets/office.obj"></a-asset-item>
-          <a-asset-item id="roomMtl" src="demo/assets/office.mtl"></a-asset-item>
-      </a-assets>
 
       <!-- Ground -->
       <a-grid static-body></a-grid>
@@ -161,7 +152,7 @@
 
     <script>
       var scene = document.querySelector('a-scene'),
-          proxyUrl = location.protocol + '//' + location.host;
+          proxyUrl = location.protocol + '//' + location.hostname + ":" + 8000;
       scene.setAttribute('proxy-controls', {proxyUrl: proxyUrl, enableOverlay: false});
       scene.addEventListener('proxycontrols.paircode', function (e) {
         var pairCode = e.detail.pairCode,
