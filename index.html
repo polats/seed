@@ -1,148 +1,229 @@
 <html>
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>ProxyControls • Demo</title>
-    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.0/dist/aframe-extras.min.js"></script>
-    <script src="https://cdn.rawgit.com/polats/aframe-proxy-controls/87c0ccf6/dist/aframe-proxy-controls.min.js"></script>
-    <script src="https://rawgit.com/polats/aframe-remote-phone-controls-component/master/dist/aframe-remote-phone-controls-component.min.js"></script>
+    <head>
+        <title>budokai.io</title>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+        <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.0/dist/aframe-extras.min.js"></script>
+        <script src="https://cdn.rawgit.com/polats/aframe-proxy-controls/87c0ccf6/dist/aframe-proxy-controls.min.js"></script>
+        <script src="https://rawgit.com/polats/aframe-remote-phone-controls-component/master/dist/aframe-remote-phone-controls-component.min.js"></script>
+        <script src="/vendor/aframe-teleport-controls.min.js"></script>
+        <script src="/vendor/aframe-orbit-controls-component.min.js"></script>
+        <style>
+          .intro-overlay {
+            z-index: 1;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            max-width: 280px;
+            box-sizing: border-box;
+            padding: 1.5em;
 
-    <style>
-      .intro-overlay {
-        z-index: 1;
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        max-width: 280px;
-        box-sizing: border-box;
-        padding: 1.5em;
+            color: #FFF;
+            background: #222;
+            font-family: Source Sans Pro, Helvetica Neue, Helvetica, Arial, sans-serif;
+          }
 
-        color: #FFF;
-        background: #222;
-        font-family: Source Sans Pro, Helvetica Neue, Helvetica, Arial, sans-serif;
-      }
+          .intro-overlay-link {
+            display: inline-block;
+            float: right;
+            padding: 0.3em 1em 0.35em;
+            margin-top: 1em;
 
-      .intro-overlay-link {
-        display: inline-block;
-        float: right;
-        padding: 0.3em 1em 0.35em;
-        margin-top: 1em;
+            text-decoration: none;
+            color: #fff;
+            background: #333;
+          }
 
-        text-decoration: none;
-        color: #fff;
-        background: #333;
-      }
+            .intro-overlay-link:hover { background: #444; }
 
-        .intro-overlay-link:hover { background: #444; }
+          @media screen and (min-width: 550px) {
+            .intro-overlay { max-width: 450px; }
+          }
 
-      @media screen and (min-width: 550px) {
-        .intro-overlay { max-width: 450px; }
-      }
+        </style>
 
-    </style>
+    </head>
+    <body>
+
+      <!--  <script type="text/javascript" src="dist/bundle.js"></script> -->
+        <a-scene networked-physics>
+            <a-assets>
+                <a-asset-item id="car-obj" src="resources/models/modelt2.obj"></a-asset-item>
+                <a-asset-item id="stadium" src="resources/models/stadium.gltf"></a-asset-item>
+                <a-asset-item id="ball" src="resources/images/football_equi.jpg"></a-asset-item>
+            </a-assets>
+
+            <!--
+            teleport-controls="type:line" id="acamera"
+             shoot="direction: 0 0 -1; spaceKeyEnabled: true"
+           -->
+
+            <a-entity
+                id="camera"
+                camera
+                position="0 880 1290" rotation="-34 0 0"
+                near="1000" far="4000" fov="2.2" user-height="0"
+                orbit-controls="
+                    autoRotate: false;
+                    target: #target;
+                    enableDamping: true;
+                    dampingFactor: 0.125;
+                    rotateSpeed:0.25;
+                    minDistance:3;
+                    maxDistance:100;"
+                mouse-cursor="">
+                <a-entity remote-phone-controls>
+                </a-entity>
+
+            </a-entity>
+
+            <a-cursor id="cursor" geometry="primitive: ring; radius-outer: 0.2; radius-inner: 0.06" material="color: lightblue" opacity="0.7"></a-cursor>
+
+            <!-- Ground -->
+            <a-grid static-body></a-grid>
+
+            <!-- Tower -->
+            <a-box id="tower"
+                    color="#39BB82"
+                    width="10" height="5" depth="6"
+                    position="0 2.5 -15"
+                    static-body></a-box>
+
+            <!-- Ramp -->
+            <a-box id="ramp"
+                   color="#39BB82"
+                   width="1" height="10" depth="18.86796"
+                   position="0 -4.04 -6.33"
+                   rotation="30 0 0"
+                   static-body></a-box>
+
+            <!-- Moving platforms -->
+            <a-box id="platform1"
+                   color="#39BB82"
+                   width="4" height="0.25" depth="4"
+                   position="7 0.125 -15"
+                   velocity="0 0 0"
+                   toggle-velocity="axis: z; min: -5; max: 5;"
+                   static-body></a-box>
+            <a-box id="platform2"
+                   color="#39BB82"
+                   width="4" height="0.25" depth="4"
+                   position="-7 0.125 -15"
+                   velocity="0 0 0"
+                   toggle-velocity="axis: y; min: 0.125; max: 5;"
+                   static-body></a-box>
+
+            <!-- Blocks -->
+            <a-box color="#39BB82"
+                   width="1" height="1" depth="1"
+                   position="15 2 0.6"
+                   dynamic-body></a-box>
+            <a-box color="#39BB82"
+                   width="1" height="1" depth="1"
+                   position="15 2 -0.6"
+                   dynamic-body></a-box>
+            <a-box color="#39BB82"
+                   width="1" height="1" depth="1"
+                   position="15 4 0"
+                   dynamic-body></a-box>
+            <a-cylinder color="#39BB82"
+                   rotation="90 0 0"
+                   position="15 2 4"
+                   dynamic-body></a-cylinder>
+            <a-sphere color="#39BB82"
+                   position="15 2 -4"
+                   dynamic-body></a-sphere>
 
 
-  </head>
-  <body>
-    <script type="text/javascript" src="dist/bundle.js"></script>
+            <!-- Camera -->
+            <!--
+            <a-entity camera position="0 15 40" look-controls></a-entity> -->
 
-    <a-scene networked-physics>
+            <a-entity id="target" width="120" depth="80" density="40" opacity="1" position="0 -3 0"></a-entity>
+            <a-sky color="#6A9DB0"></a-sky>
 
-      <a-assets>
-          <a-asset-item id="car-obj" src="resources/models/modelt2.obj"></a-asset-item>
-          <a-asset-item id="stadium" src="resources/models/stadium.gltf"></a-asset-item>
-          <a-asset-item id="ball" src="resources/images/football_equi.jpg"></a-asset-item>
-      </a-assets>
+            <a-light type="ambient" color="#ccc"></a-light>
+            <a-light color="#ddf" distance="100" intensity="0.4" type="point"></a-light>
+            <a-light color="#ddf" position="3 10 -10" distance="50" intensity="0.4" type="point"></a-light>
+            <!--
+            <a-entity light="type: ambient; color: #BBB"></a-entity>
+            <a-entity light="type: hemisphere; color: #33C; groundColor: #3C3; intensity: 0.2"></a-entity>
+            <a-entity light="type: directional; color: #f296cc; intensity: 0.6" position="-0.5 1 1"></a-entity>
+            <a-entity cubemap="folder: resources/images/flame/; edgeLength: 1000"></a-entity>
+            -->
 
-      <a-entity
-          id="camera"
-          camera
-          teleport-controls="type:line" id="acamera"
-            shoot="direction: 0 0 -1; spaceKeyEnabled: true"
-          position="0 880 1290" rotation="-34 0 0"
-          near="1000" far="4000" fov="2.2" user-height="0"
-          orbit-controls="
-              autoRotate: false;
-              target: #target;
-              enableDamping: true;
-              dampingFactor: 0.125;
-              rotateSpeed:0.25;
-              minDistance:3;
-              maxDistance:100;">
-              <!--
-             <a-entity remote-phone-controls>
-                      </a-entity>
-              -->
-      </a-entity>
+        </a-scene>
 
-<!--
-      <a-cursor id="cursor" geometry="primitive: ring; radius-outer: 0.2; radius-inner: 0.06" material="color: lightblue" opacity="0.7"></a-cursor>
+        <div style="position:absolute; top:0; left:0; padding:12px;" >
+            <button id="changeCamera">Change Camera</button>
+        </div>
 
-      <a-grid static-body></a-grid>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event)
+            {
+                var scene = document.querySelector('a-scene');
 
-      <a-box id="tower"
-              color="#39BB82"
-              width="10" height="5" depth="6"
-              position="0 2.5 -15"
-              static-body></a-box>
--->
+                if (scene.hasLoaded) addEventListeners();
+                else scene.addEventListener( 'loaded', addEventListeners );
+            });
 
-      <!-- Lighting -->
-      <a-light type="ambient" color="#bbb"></a-light>
-      <a-light color="#ccc" position="0 30 0" distance="100" intensity="0.4" type="point"></a-light>
-      <a-light color="#ccc" position="3 10 -10" distance="50" intensity="0.4" type="point"></a-light>
+            function addEventListeners()
+            {
+                console.log( 'add event listeners' );
 
-      <a-entity id="target" width="120" depth="80" density="40" opacity="1" position="0 -3 0"></a-entity>
-      <a-sky color="#6A9DB0"></a-sky>
+                // ORBIT CAMERA DRAG START / END EVENTS LISTENER
+                document.querySelector('#camera').addEventListener('start-drag-orbit-controls', handleDragStart );
+                document.querySelector('#camera').addEventListener('end-drag-orbit-controls', handleDragEnd );
 
+                // TOGGLE ORBIT AND STATIC CAMERA
+                document.querySelector('#changeCamera').addEventListener( 'click', handleSwitchCamera );
+            }
 
-    </a-scene>
+            function handleDragStart( event )
+            {
+                console.log( "drag start" );
+            }
 
-<!--
-    <a-scene networked-physics>
+            function handleDragEnd( event )
+            {
+                console.log( "drag end" );
+            }
 
-      <a-entity
-          id="camera"
-          camera
-          teleport-controls="type:line" id="acamera"
-            shoot="direction: 0 0 -1; spaceKeyEnabled: true"
-          position="0 880 1290" rotation="-34 0 0"
-          near="1000" far="4000" fov="2.2" user-height="0"
-          orbit-controls="
-              autoRotate: false;
-              target: #target;
-              enableDamping: true;
-              dampingFactor: 0.125;
-              rotateSpeed:0.25;
-              minDistance:3;
-              maxDistance:100;">
-      </a-entity>
+            function handleSwitchCamera( event )
+            {
+                var cam1 = document.querySelector('#camera');
+                var cam2 = document.querySelector('#camera2');
 
+                if( cam1.components.camera.data.active )
+                {
+                    cam2.setAttribute('camera', 'active', true);
+                }
+                else
+                {
+                    cam1.setAttribute('camera', 'active', true);
+                }
+            }
+        </script>
 
+        <div class="intro-overlay" style="display: none;">
+          <p>Move around with WASD keys, ←↑→↓, or a USB gamepad.</p>
+          <p>Pair code: “<span data-bind="pairCode"></span>”</p>
+          <div><a href="javascript:void(0)" class="intro-overlay-link">Got it!</a></div>
+        </div>
 
+        <script>
+          var scene = document.querySelector('a-scene'),
+              proxyUrl = location.protocol + '//' + location.hostname + ":" + 8000;
+          scene.setAttribute('proxy-controls', {proxyUrl: proxyUrl, enableOverlay: false});
+          scene.addEventListener('proxycontrols.paircode', function (e) {
+            var pairCode = e.detail.pairCode,
+                overlay = document.querySelector('.intro-overlay'),
+                overlayLink = document.querySelector('.intro-overlay-link');
+            overlay.querySelector('[data-bind=pairCode]').textContent = pairCode;
+            overlay.style.display = '';
+            overlayLink.addEventListener('click', function () { overlay.remove(); });
+          });
+        </script>
 
-    </a-scene>
--->
-    <div class="intro-overlay" style="display: none;">
-      <p>Move around with WASD keys, ←↑→↓, or a USB gamepad.</p>
-      <p>Pair code: “<span data-bind="pairCode"></span>”</p>
-      <div><a href="javascript:void(0)" class="intro-overlay-link">Got it!</a></div>
-    </div>
-
-    <script>
-      var scene = document.querySelector('a-scene'),
-          proxyUrl = location.protocol + '//' + location.hostname + ":" + 8000;
-      scene.setAttribute('proxy-controls', {proxyUrl: proxyUrl, enableOverlay: false});
-      scene.addEventListener('proxycontrols.paircode', function (e) {
-        var pairCode = e.detail.pairCode,
-            overlay = document.querySelector('.intro-overlay'),
-            overlayLink = document.querySelector('.intro-overlay-link');
-        overlay.querySelector('[data-bind=pairCode]').textContent = pairCode;
-        overlay.style.display = '';
-        overlayLink.addEventListener('click', function () { overlay.remove(); });
-      });
-    </script>
-
-  </body>
+    </body>
 </html>
