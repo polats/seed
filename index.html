@@ -3,7 +3,9 @@
         <title>A-Frame Soccer League</title>
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
-        <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.2.7/dist/aframe-extras.min.js"></script>
+        <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.0/dist/aframe-extras.min.js"></script>
+        <script src="/vendor/aframe-teleport-controls.min.js"></script>
+        <script src="/vendor/aframe-orbit-controls-component.min.js"></script>
         <style>
             html, body {
                 padding: 0;
@@ -15,15 +17,35 @@
         <script type="text/javascript" src="dist/bundle.js"></script>
         <a-scene networked-physics>
             <a-assets>
-                <a-asset-item id="car-obj" src="resources/models/modelt.obj"></a-asset-item>
+                <a-asset-item id="car-obj" src="resources/models/modelt2.obj"></a-asset-item>
                 <a-asset-item id="stadium" src="resources/models/stadium.gltf"></a-asset-item>
                 <a-asset-item id="ball" src="resources/images/football_equi.jpg"></a-asset-item>
             </a-assets>
 
-            <!-- Camera -->
-            <a-entity camera position="0 15 40" look-controls></a-entity>
+            <a-entity
+                id="camera"
+                camera
+                teleport-controls="type:line" id="acamera"
+                  shoot="direction: 0 0 -1; spaceKeyEnabled: true"
+                position="0 880 1290" rotation="-34 0 0"
+                near="1000" far="4000" fov="2.2" user-height="0"
+                orbit-controls="
+                    autoRotate: false;
+                    target: #target;
+                    enableDamping: true;
+                    dampingFactor: 0.125;
+                    rotateSpeed:0.25;
+                    minDistance:3;
+                    maxDistance:100;"
+                mouse-cursor="">
+            </a-entity>
 
-            <a-ocean width="120" depth="80" density="40" opacity="1" position="0 -3 0"></a-ocean>
+
+            <!-- Camera -->
+            <!--
+            <a-entity camera position="0 15 40" look-controls></a-entity> -->
+
+            <a-entity id="target" width="120" depth="80" density="40" opacity="1" position="0 -3 0"></a-entity>
             <a-sky color="#6A9DB0"></a-sky>
 
             <a-light type="ambient" color="#ccc"></a-light>
@@ -37,5 +59,57 @@
             -->
 
         </a-scene>
+
+        <div style="position:absolute; top:0; left:0; padding:12px;" >
+            <button id="changeCamera">Change Camera</button>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event)
+            {
+                var scene = document.querySelector('a-scene');
+
+                if (scene.hasLoaded) addEventListeners();
+                else scene.addEventListener( 'loaded', addEventListeners );
+            });
+
+            function addEventListeners()
+            {
+                console.log( 'add event listeners' );
+
+                // ORBIT CAMERA DRAG START / END EVENTS LISTENER
+                document.querySelector('#camera').addEventListener('start-drag-orbit-controls', handleDragStart );
+                document.querySelector('#camera').addEventListener('end-drag-orbit-controls', handleDragEnd );
+
+                // TOGGLE ORBIT AND STATIC CAMERA
+                document.querySelector('#changeCamera').addEventListener( 'click', handleSwitchCamera );
+            }
+
+            function handleDragStart( event )
+            {
+                console.log( "drag start" );
+            }
+
+            function handleDragEnd( event )
+            {
+                console.log( "drag end" );
+            }
+
+            function handleSwitchCamera( event )
+            {
+                var cam1 = document.querySelector('#camera');
+                var cam2 = document.querySelector('#camera2');
+
+                if( cam1.components.camera.data.active )
+                {
+                    cam2.setAttribute('camera', 'active', true);
+                }
+                else
+                {
+                    cam1.setAttribute('camera', 'active', true);
+                }
+            }
+        </script>
+
     </body>
 </html>

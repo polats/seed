@@ -37,6 +37,12 @@ class Car extends PhysicalObject {
             el.setAttribute('material', 'color: white');
             el.setAttribute('obj-model', 'obj: #car-obj');
             el.setAttribute('game-object-id', this.id);
+
+            // let cameraObj = document.createElement('a-entity');
+            // el.appendChild(cameraObj);
+            // cameraObj.setAttribute('camera', '');
+            // cameraObj.setAttribute('position', '0 0 0');
+            // cameraObj.setAttribute('look-controls', '');
         }
     }
 

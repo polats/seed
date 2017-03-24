@@ -1,3 +1,25 @@
+var fs = require('fs'),
+    dotenv = require('dotenv'),
+    ProxyControlsServer = require('./server/proxy-controls-server');
+
+dotenv.config({silent: true});
+
+if (process.env.SSL_PORT) {
+  new ProxyControlsServer({
+    port: process.env.PORT,
+    sslPort: process.env.SSL_PORT,
+    key: fs.readFileSync(process.env.SSL_KEY_PATH),
+    cert: fs.readFileSync(process.env.SSL_CERT_PATH),
+  });
+} else {
+  new ProxyControlsServer({
+    port: process.env.PORT || process.env.npm_package_config_port
+  });
+}
+
+
+
+/*
 'use strict';
 
 const express = require('express');
@@ -15,16 +37,6 @@ server.use('/', express.static(path.join(__dirname, '.')));
 const requestHandler = server.listen(PORT, () => console.log(`Listening on ${PORT}`));
 const io = socketIO(requestHandler);
 
-/*
-io.on('connection', function (socket) {
-  console.log('Connection received');
-
-  socket.on('broadcast', function (data) {
-    socket.broadcast.emit('broadcast', data);
-  });
-});
-*/
-
 // get game classes
 const SLServerEngine = require('./src/server/SLServerEngine.js');
 const SLGameEngine = require('./src/common/SLGameEngine.js');
@@ -35,6 +47,7 @@ const physicsEngine = new CannonPhysicsEngine();
 const gameEngine = new SLGameEngine({ physicsEngine, traceLevel: 0 });
 const serverEngine = new SLServerEngine(io, gameEngine, { debug: {}, updateRate: 6 });
 
-
 // start the game
 serverEngine.start();
+
+*/

@@ -5,43 +5,80 @@
     "node": "6.4.0",
     "npm": "3.10.3"
   },
-  "description": "A sample A-Frame multiplayer with networked physics",
+  "description": "A realtime WebVR multiplayer king-of-the-hill (.io) game using Incheon and A-Frame",
   "main": "main.js",
+  "browser": "client/lib/proxy-controls-client.js",
+  "config": {
+    "port": 3000
+  },
+
   "dependencies": {
+    "angular": "1.4.8",
+    "angular-route": "1.4.8",
+    "angular-sanitize": "1.4.8",
+    "angular-touch": "1.4.8",
+
+    "dotenv": "2.0.0",
+    "koa": "1.1.2",
+    "koa-cors": "0.0.16",
+    "koa-force-ssl": "0.0.5",
+    "koa-route": "2.4.2",
+    "koa-static": "2.0.0",
+    "moniker": "0.1.2",
+    "socketpeer": "donmccurdy/socketpeer#fork-master",
+
+    "aframe-orbit-controls-component-2": "*",
     "aframe-cubemap-component": "^0.1.1",
     "browserify": "^13.0.1",
     "eventemitter3": "^1.2.0",
     "express": "^4.14.0",
-    "incheon": "Opherv/Incheon#develop",
+    "incheon": "~1.0.0",
     "query-string": "^4.2.3",
     "socket.io": "^1.4.8",
     "three": "^0.84.0",
     "tween": "^0.9.0"
   },
+
+  "optionalDependencies": {
+    "bufferutil": "1.2.1",
+    "utf-8-validate": "1.2.1"
+  },
+
   "devDependencies": {
+    "envify": "3.4.0",
+    "nodemon": "1.8.1",
     "babelify": "^7.3.0",
     "eslint": "^3.14.1",
     "eslint-config-google": "^0.7.1",
     "watchify": "^3.9.0"
   },
   "scripts": {
-    "start": "node main.js",
-    "build": "browserify src/client/clientMain.js -o dist/bundle.js -t [ babelify --presets [ es2015 ]]",
+    "start": "npm run prod",
+    "test": "karma start ./tests/karma.conf.js",
+    "build": "browserify client/app.js -o client/bundle.js && gzip -f client/bundle.js && browserify src/client/clientMain.js -o dist/bundle.js -t [ babelify --presets [ es2015 ]]",
     "watch": "watchify src/client/clientMain.js -o dist/bundle.js -v -d -t [ babelify --presets [ es2015 ]]",
+    "prod": "npm run build && node main.js",
+    "dev": "watchify client/app.js -o client/bundle.js -d & nodemon index.js",
+    "postversion": "git push && git push --tags",
     "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/namel/aframe-soccer-league.git"
+    "url": "git+https://github.com/polats/seed.git"
   },
   "keywords": [
     "game",
-    "websockets"
+    "multiplayer",
+    "realtime",
+    "WebRTC",
+    "incheon",
+    "webvr",
+    "aframe"
   ],
-  "author": "Gary Weiss",
+  "author": "Paul Gadi",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/namel/aframe-soccer-league/issues"
+    "url": "https://github.com/polats/seed/issues"
   },
-  "homepage": "https://github.com/namel/aframe-soccer-league#readme"
+  "homepage": "https://github.com/polats/seed#readme"
 }

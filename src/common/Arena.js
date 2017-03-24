@@ -46,18 +46,19 @@ class Arena extends PhysicalObject {
         this.walls.push(this.addWall(x, y + ARENA_HEIGHT, z + ARENA_DEPTH, ARENA_WIDTH, ARENA_HEIGHT, WALL_WIDTH));
         this.walls.push(this.addWall(x, y + ARENA_HEIGHT * 2, z, ARENA_WIDTH, WALL_WIDTH, ARENA_DEPTH));
 
-        /*
+
         let scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
         if (scene) {
             let el = this.renderEl = document.createElement('a-gltf-model');
             scene.appendChild(el);
             el.setAttribute('position', `${this.position.x} ${this.position.y} ${this.position.z}`);
+            el.setAttribute('id', `floor`);
             el.setAttribute('src', `#stadium`);
             el.setAttribute('scale', `${ARENA_MODEL_SCALE} 0 ${ARENA_MODEL_SCALE}`);
             el.setAttribute('rotate', `0 90 0`);
             el.setAttribute('game-object-id', this.id);
         }
-        */
+
     }
 
     toString() {

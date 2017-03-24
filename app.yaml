@@ -1,0 +1,11 @@
+env: flex
+runtime: nodejs
+# [START network]
+# This ensures clients will be able to connect via websockets to any instance of
+# this app using websockets
+network:
+  forwarded_ports:
+  - 8080
+  instance_tag: websocket
+# [END network]
+# [END app_yaml]
