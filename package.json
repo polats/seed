@@ -9,7 +9,7 @@
   "main": "main.js",
   "browser": "client/lib/proxy-controls-client.js",
   "config": {
-    "port": 3000
+    "port": 8000
   },
 
   "dependencies": {
