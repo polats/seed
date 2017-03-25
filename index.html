@@ -45,7 +45,7 @@
     </head>
     <body>
 
-      <!--  <script type="text/javascript" src="dist/bundle.js"></script> -->
+      <script type="text/javascript" src="dist/bundle.js"></script>
         <a-scene networked-physics>
             <a-assets>
                 <a-asset-item id="car-obj" src="resources/models/modelt2.obj"></a-asset-item>
@@ -60,6 +60,7 @@
 
             <a-entity
                 id="camera"
+                raycaster
                 camera
                 position="0 880 1290" rotation="-34 0 0"
                 near="1000" far="4000" fov="2.2" user-height="0"
@@ -78,62 +79,6 @@
             </a-entity>
 
             <a-cursor id="cursor" geometry="primitive: ring; radius-outer: 0.2; radius-inner: 0.06" material="color: lightblue" opacity="0.7"></a-cursor>
-
-            <!-- Ground -->
-            <a-grid static-body></a-grid>
-
-            <!-- Tower -->
-            <a-box id="tower"
-                    color="#39BB82"
-                    width="10" height="5" depth="6"
-                    position="0 2.5 -15"
-                    static-body></a-box>
-
-            <!-- Ramp -->
-            <a-box id="ramp"
-                   color="#39BB82"
-                   width="1" height="10" depth="18.86796"
-                   position="0 -4.04 -6.33"
-                   rotation="30 0 0"
-                   static-body></a-box>
-
-            <!-- Moving platforms -->
-            <a-box id="platform1"
-                   color="#39BB82"
-                   width="4" height="0.25" depth="4"
-                   position="7 0.125 -15"
-                   velocity="0 0 0"
-                   toggle-velocity="axis: z; min: -5; max: 5;"
-                   static-body></a-box>
-            <a-box id="platform2"
-                   color="#39BB82"
-                   width="4" height="0.25" depth="4"
-                   position="-7 0.125 -15"
-                   velocity="0 0 0"
-                   toggle-velocity="axis: y; min: 0.125; max: 5;"
-                   static-body></a-box>
-
-            <!-- Blocks -->
-            <a-box color="#39BB82"
-                   width="1" height="1" depth="1"
-                   position="15 2 0.6"
-                   dynamic-body></a-box>
-            <a-box color="#39BB82"
-                   width="1" height="1" depth="1"
-                   position="15 2 -0.6"
-                   dynamic-body></a-box>
-            <a-box color="#39BB82"
-                   width="1" height="1" depth="1"
-                   position="15 4 0"
-                   dynamic-body></a-box>
-            <a-cylinder color="#39BB82"
-                   rotation="90 0 0"
-                   position="15 2 4"
-                   dynamic-body></a-cylinder>
-            <a-sphere color="#39BB82"
-                   position="15 2 -4"
-                   dynamic-body></a-sphere>
-
 
             <!-- Camera -->
             <!--
