@@ -124,6 +124,7 @@ class SLGameEngine extends GameEngine {
         if (playerCar) {
             if (['up', 'down'].includes(inputData.input)) this.carControl.accelerate(playerCar, inputData.input);
             if (['right', 'left'].includes(inputData.input)) this.carControl.turn(playerCar, inputData.input);
+            if (['dash-move'].includes(inputData.input)) this.carControl.dash(playerCar, inputData);
             playerCar.refreshFromPhysics();
         }
     }

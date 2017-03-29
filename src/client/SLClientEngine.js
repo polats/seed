@@ -1,5 +1,5 @@
 const ClientEngine = require('incheon').ClientEngine;
-const KeyboardControls = require('../client/KeyboardControls');
+const PlayerControls = require('../client/PlayerControls');
 const SLRenderer = require('./SLRenderer');
 
 
@@ -19,6 +19,7 @@ class SLClientEngine extends ClientEngine {
 
     // start then client engine
     start() {
+        this.connected = false;
 
         super.start();
         if (this.verbose) console.log(`starting client, registering input handlers`);
@@ -29,34 +30,63 @@ class SLClientEngine extends ClientEngine {
             this.renderer.once('ready', this.onRendererReady, this);
         }
 
+
     }
 
     onRendererReady() {
-        this.controls = new KeyboardControls();
+        this.controls = new PlayerControls();
 
         this.controls.on('fire', () => {
             this.sendInput('space');
         });
+    }
 
+    // once joined, add the control components to the player's object
+    playerJoined()
+    {
+      // add controls
+      let playerCar = this.gameEngine.world.getPlayerObject(this.playerId);
+      if (playerCar != undefined)
+      {
+        playerCar.renderEl.setAttribute('dash-move-controls', 'type:line; raycastCamera: #orbit-camera; maxLength: 200; dashLineLength: 15');
+        this.connected = true;
+      }
     }
 
     // our pre-step is to process inputs that are "currently pressed" during the game step
     preStep() {
-        if (this.controls) {
-            if (this.controls.activeInput.up) {
+
+      // check for playerJoined
+        if (!this.connected)
+        {
+          if (this.playerId)
+            {
+              this.playerJoined();
+            }
+        }
+
+        var controls = this.controls;
+
+        if (controls) {
+            if (controls.activeInput.up) {
                 this.sendInput('up', { movement: true });
             }
 
-            if (this.controls.activeInput.left) {
+            if (controls.activeInput.left) {
                 this.sendInput('left', { movement: true });
             }
 
-            if (this.controls.activeInput.right) {
+            if (controls.activeInput.right) {
                 this.sendInput('right', { movement: true });
             }
 
-            if (this.controls.activeInput.down) {
+            if (controls.activeInput.down) {
                 this.sendInput('down', { movement: true });
+            }
+
+            if (controls.dashInput.pending) {
+              controls.dashInput.pending = false;
+              this.sendInput('dash-move', {dashSpeed: controls.dashInput.dashSpeed, dashVector: controls.dashInput.dashVector});
             }
         }
     }

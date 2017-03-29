@@ -16,9 +16,9 @@ const keyCodeTable = {
 };
 
 /**
- * This class handles keyboard device controls
+ * This class handles all device controls
  */
-class KeyboardControls{
+class PlayerControls{
 
     constructor(){
         Object.assign(this, EventEmitter.prototype);
@@ -32,6 +32,12 @@ class KeyboardControls{
             left: false,
             right: false
         };
+
+        this.dashInput = {
+          pending: false,
+          dashSpeed: 0,
+          dashVector: null
+        };
     }
 
     setupListeners(){
@@ -44,6 +50,14 @@ class KeyboardControls{
 
         document.addEventListener('keydown', (e) => { this.onKeyChange(e, true);});
         document.addEventListener('keyup', (e) => { this.onKeyChange(e, false);});
+
+        document.addEventListener('dash-move', (e) => { this.onDashMove(e, false);});
+    }
+
+    onDashMove(e, isDown) {
+      this.dashInput.pending = true;
+      this.dashInput.dashSpeed = e.detail.dashSpeed;
+      this.dashInput.dashVector = e.detail.dashVector;
     }
 
     onKeyChange(e, isDown) {
@@ -60,4 +74,4 @@ class KeyboardControls{
     }
 }
 
-module.exports = KeyboardControls;
+module.exports = PlayerControls;

@@ -1,6 +1,6 @@
 'use strict';
 const FORWARD_IMPULSE = 0.45;
-const MAX_VELOCITY = 25;
+const MAX_VELOCITY = 1000;
 const MIN_TURNING_VELOCITY = 4.0;
 const TURN_IMPULSE = 0.14;
 const SMALL_TURNING_VELOCITY = 8.0;
@@ -50,6 +50,18 @@ class CarControl {
         if (curVel < SMALL_TURNING_VELOCITY) impulse *= 0.6;
         deltaAngularVelocity.scale(impulse, deltaAngularVelocity);
         car.physicsObj.angularVelocity.vadd(deltaAngularVelocity, car.physicsObj.angularVelocity);
+    }
+
+    dash(car, inputData)
+    {
+      let impulse = inputData.options.dashSpeed;
+      let newVec = car.physicsObj.quaternion.vmult(
+        new CANNON.Vec3(
+          inputData.options.dashVector.x,
+          inputData.options.dashVector.y,
+          impulse));
+
+      car.physicsObj.velocity.vadd(newVec, car.physicsObj.velocity);
     }
 }
 

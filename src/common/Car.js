@@ -38,9 +38,6 @@ class Car extends PhysicalObject {
             el.setAttribute('obj-model', 'obj: #car-obj');
             el.setAttribute('game-object-id', this.id);
 
-            // add controls
-            el.setAttribute('dash-move-controls', 'type:line; raycastCamera: #orbit-camera; maxLength: 200; dashLineLength: 15');
-
             // let cameraObj = document.createElement('a-entity');
             // el.appendChild(cameraObj);
             // cameraObj.setAttribute('camera', '');
