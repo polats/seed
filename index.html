@@ -6,7 +6,7 @@
         <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.0/dist/aframe-extras.min.js"></script>
         <script src="https://cdn.rawgit.com/polats/aframe-proxy-controls/87c0ccf6/dist/aframe-proxy-controls.min.js"></script>
         <script src="https://rawgit.com/polats/aframe-remote-phone-controls-component/master/dist/aframe-remote-phone-controls-component.min.js"></script>
-        <script src="/vendor/aframe-teleport-controls.min.js"></script>
+        <script src="https://rawgit.com/polats/aframe-dash-move-controls-component/master/dist/aframe-dash-move-controls-component.js"></script>
         <script src="/vendor/aframe-orbit-controls-component.min.js"></script>
         <style>
           .intro-overlay {
@@ -59,26 +59,30 @@
            -->
 
             <a-entity
-                id="camera"
+                id="orbit-camera"
                 raycaster
                 camera
-                position="0 880 1290" rotation="-34 0 0"
+                position="0 42 30" rotation="-65 0 0"
                 near="1000" far="4000" fov="2.2" user-height="0"
-                orbit-controls="
-                    autoRotate: false;
-                    target: #target;
-                    enableDamping: true;
-                    dampingFactor: 0.125;
-                    rotateSpeed:0.25;
-                    minDistance:3;
-                    maxDistance:100;"
                 mouse-cursor="">
-                <a-entity remote-phone-controls>
-                </a-entity>
+            </a-entity>
 
+            <!--
+            <a-entity
+                  id="fps-camera"
+                  raycaster
+                  camera="active: false"
+                  position="0 0.5 0"
+                  dash-move-controls="type:line; raycastCamera: #orbit-camera; maxLength: 200; dashLineLength: 15"
+                  wasd-controls>
+                  <a-box color="tomato" depth="1" height="1" width="1">
+                  </a-box>
+                  <a-entity remote-phone-controls>
+                  </a-entity>
             </a-entity>
 
             <a-cursor id="cursor" geometry="primitive: ring; radius-outer: 0.2; radius-inner: 0.06" material="color: lightblue" opacity="0.7"></a-cursor>
+          -->
 
             <!-- Camera -->
             <!--
@@ -88,9 +92,9 @@
             <a-sky color="#6A9DB0"></a-sky>
 
             <a-light type="ambient" color="#ccc"></a-light>
+            <!--
             <a-light color="#ddf" distance="100" intensity="0.4" type="point"></a-light>
             <a-light color="#ddf" position="3 10 -10" distance="50" intensity="0.4" type="point"></a-light>
-            <!--
             <a-entity light="type: ambient; color: #BBB"></a-entity>
             <a-entity light="type: hemisphere; color: #33C; groundColor: #3C3; intensity: 0.2"></a-entity>
             <a-entity light="type: directional; color: #f296cc; intensity: 0.6" position="-0.5 1 1"></a-entity>
@@ -117,8 +121,8 @@
                 console.log( 'add event listeners' );
 
                 // ORBIT CAMERA DRAG START / END EVENTS LISTENER
-                document.querySelector('#camera').addEventListener('start-drag-orbit-controls', handleDragStart );
-                document.querySelector('#camera').addEventListener('end-drag-orbit-controls', handleDragEnd );
+                document.querySelector('#orbit-camera').addEventListener('start-drag-orbit-controls', handleDragStart );
+                document.querySelector('#orbit-camera').addEventListener('end-drag-orbit-controls', handleDragEnd );
 
                 // TOGGLE ORBIT AND STATIC CAMERA
                 document.querySelector('#changeCamera').addEventListener( 'click', handleSwitchCamera );
@@ -136,8 +140,8 @@
 
             function handleSwitchCamera( event )
             {
-                var cam1 = document.querySelector('#camera');
-                var cam2 = document.querySelector('#camera2');
+                var cam1 = document.querySelector('#fps-camera');
+                var cam2 = document.querySelector('#orbit-camera');
 
                 if( cam1.components.camera.data.active )
                 {
