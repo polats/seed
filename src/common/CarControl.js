@@ -58,10 +58,10 @@ class CarControl {
       let newVec = car.physicsObj.quaternion.vmult(
         new CANNON.Vec3(
           inputData.options.dashVector.x,
-          inputData.options.dashVector.y,
+          inputData.options.dashVector.z,
           impulse));
 
-      car.physicsObj.velocity.vadd(newVec, car.physicsObj.velocity);
+      car.physicsObj.velocity.vadd(inputData.options.dashVector, car.physicsObj.velocity);
     }
 }
 

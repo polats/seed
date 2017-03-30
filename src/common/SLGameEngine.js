@@ -68,7 +68,7 @@ class SLGameEngine extends GameEngine {
         // car physics
         this.world.forEachObject((id, o) => {
             if (o.class === Car) {
-                o.adjustCarMovement();
+                // o.adjustCarMovement();
             }
         });
     }
