@@ -2,6 +2,7 @@
 
 const PhysicalObject = require('incheon').serialize.PhysicalObject;
 const MASS = 0;
+const FRICTION = 5;
 const ARENA_SCALE = 0.1;
 
 // width, depth, and height specified in half-segements
@@ -33,7 +34,7 @@ class Arena extends PhysicalObject {
 
         // create the physics body
         this.gameEngine = gameEngine;
-        this.physicsObj = gameEngine.physicsEngine.addBox(ARENA_WIDTH, 1, ARENA_DEPTH, MASS, 0 );
+        this.physicsObj = gameEngine.physicsEngine.addBox(ARENA_WIDTH, 1, ARENA_DEPTH, MASS, FRICTION );
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         let x = this.position.x;
         let y = this.position.y;

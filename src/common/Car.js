@@ -1,7 +1,9 @@
 'use strict';
 
 const PhysicalObject = require('incheon').serialize.PhysicalObject;
-const MASS = 2;
+const RADIUS = 1;
+const MASS = 10;
+const FRICTION = 5;
 let CANNON = null;
 
 class Car extends PhysicalObject {
@@ -19,23 +21,31 @@ class Car extends PhysicalObject {
         // create the physics body
         this.gameEngine = gameEngine;
         CANNON = this.gameEngine.physicsEngine.CANNON;
-        this.physicsObj = gameEngine.physicsEngine.addBox(1, 1, 2, MASS, 0);
+        // this.physicsObj = gameEngine.physicsEngine.addBox(1, 1, 2, MASS, FRICTION);
+        this.physicsObj = gameEngine.physicsEngine.addSphere(RADIUS, MASS);
         this.physicsObj.position.set(this.position.x, this.position.y, this.position.z);
         this.physicsObj.angularDamping = 0.1;
 
         let scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
         if (scene) {
             let elroot = document.createElement('a-entity');
-            let el = this.renderEl = document.createElement('a-entity');
+            let el = this.renderEl = document.createElement('a-sphere');
             elroot.appendChild(el);
             scene.appendChild(elroot);
             let p = this.position;
             let q = this.quaternion;
+            // el.setAttribute('position', `${p.x} ${p.y} ${p.z}`);
+            // el.object3D.quaternion.set(q.x, q.y, q.z, q.w);
+            // el.setAttribute('scale', '0.5 0.5 0.5');
+            // el.setAttribute('material', 'color: white');
+            // el.setAttribute('obj-model', 'obj: #car-obj');
+
             el.setAttribute('position', `${p.x} ${p.y} ${p.z}`);
-            el.object3D.quaternion.set(q.x, q.y, q.z, q.w);
-            el.setAttribute('scale', '0.5 0.5 0.5');
-            el.setAttribute('material', 'color: white');
-            el.setAttribute('obj-model', 'obj: #car-obj');
+            // el.setAttribute('material', 'src: #ball');
+            el.setAttribute('color', 'tomato');
+            el.setAttribute('radius', "${RADIUS}");
+            el.setAttribute('geometry', `primitive: sphere; radius: ${RADIUS}; segmentsWidth: 32; segmentsHeight: 16`);
+            el.setAttribute('velocity-trail', '');
             el.setAttribute('game-object-id', this.id);
 
             // let cameraObj = document.createElement('a-entity');
