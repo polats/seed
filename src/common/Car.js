@@ -46,6 +46,7 @@ class Car extends PhysicalObject {
             el.setAttribute('radius', "${RADIUS}");
             el.setAttribute('geometry', `primitive: sphere; radius: ${RADIUS}; segmentsWidth: 32; segmentsHeight: 16`);
             el.setAttribute('velocity-trail', '');
+            // el.setAttribute('light', 'color: #ff0000; distance: 3; intensity: 1; type: point');
             el.setAttribute('game-object-id', this.id);
 
             // let cameraObj = document.createElement('a-entity');

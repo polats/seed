@@ -49,14 +49,23 @@
         <a-scene networked-physics>
             <a-assets>
                 <a-asset-item id="car-obj" src="resources/models/modelt2.obj"></a-asset-item>
-                <a-asset-item id="stadium" src="resources/models/stadium.gltf"></a-asset-item>
+                <!-- <a-asset-item id="stadium" src="resources/models/stadium.gltf"></a-asset-item> -->
                 <a-asset-item id="ball" src="resources/images/football_equi.jpg"></a-asset-item>
+                <a-asset-item id="sky" src="resources/images/sky.jpg"></a-asset-item>
+
             </a-assets>
 
             <!--
             teleport-controls="type:line" id="acamera"
              shoot="direction: 0 0 -1; spaceKeyEnabled: true"
+
+             light geometry geometry="primitive: sphere; radius: 1.5"
+                      material="color: #FFF; shader: flat"
            -->
+
+           <a-mixin id="light"
+                    light="color: #00DDDD; distance: 120; intensity: 0.25; type: point">
+           </a-mixin>
 
             <a-entity
                 id="orbit-camera"
@@ -89,17 +98,44 @@
             <a-entity camera position="0 15 40" look-controls></a-entity> -->
 
             <a-entity id="target" width="120" depth="80" density="40" opacity="1" position="0 -3 0"></a-entity>
-            <a-sky color="#6A9DB0"></a-sky>
+            <a-sky src="#sky"></a-sky>
+            <a-entity id="floor"
+                      position="0 -3.5 0"
+                      rotation="-90 0 0"
+                      geometry="primitive: plane; width: 140; height: 70"
+                      material="src: url(resources/images/floor.jpg); repeat: 20 10; metalness:0.8; roughness: 0.3; sphericalEnvMap: #sky;">
+                      <a-box position="0 0 -0.5" width="142" height="72" depth="0.5" color="#6688FF"
+                      material="metalness:0.5; roughness: 0.3;"/>
+                      <a-box position="0 0 -0.8" width="145" height="75" depth="0.5" color="#FFd65D"
+                      material="metalness:0.05; roughness: 0.3;"/>
 
-            <!--
+            </a-entity>
+
             <a-light type="ambient" color="#ccc"></a-light>
-            <a-light color="#ddf" distance="100" intensity="0.4" type="point"></a-light>
-            <a-light color="#ddf" position="3 10 -10" distance="50" intensity="0.4" type="point"></a-light>
-            <a-entity light="type: ambient; color: #BBB"></a-entity>
-            <a-entity light="type: hemisphere; color: #33C; groundColor: #3C3; intensity: 0.2"></a-entity>
-            <a-entity light="type: directional; color: #f296cc; intensity: 0.6" position="-0.5 1 1"></a-entity>
-            <a-entity cubemap="folder: resources/images/flame/; edgeLength: 1000"></a-entity>
-            -->
+
+            <a-entity position="-0.5 1 1">
+              <a-animation attribute="position" to="10 1 1"
+                           direction="alternate"
+                           repeat="indefinite" easing="linear" dur="8000">
+              </a-animation>
+              <a-entity light="type: point; color: #f296cc; intensity: 0.1"></a-entity>
+
+            </a-entity>
+
+
+            <a-entity position="0 0 0">
+              <a-animation attribute="rotation" to="0 0 360"
+                           repeat="indefinite" easing="linear" dur="10000">
+              </a-animation>
+              <a-entity mixin="light" position="90 0 0"></a-entity>
+            </a-entity>
+
+            <a-entity position="0 0 0">
+              <a-animation attribute="rotation" to="360 0 0"
+                           repeat="indefinite" easing="linear" dur="8000">
+              </a-animation>
+              <a-entity mixin="light" position="0 0 120"></a-entity>
+            </a-entity>
 
         </a-scene>
 
