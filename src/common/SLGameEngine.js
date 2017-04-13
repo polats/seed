@@ -69,6 +69,7 @@ class SLGameEngine extends GameEngine {
         this.world.forEachObject((id, o) => {
             if (o.class === Car) {
                 // o.adjustCarMovement();
+                o.moveFPSCamera();
             }
         });
     }
@@ -93,8 +94,10 @@ class SLGameEngine extends GameEngine {
         this.addObjectToWorld(car);
         this.numCars++;
 
+        /*
         if (this.numCars === 2)
             this.makeBall();
+        */
 
         return car;
     }

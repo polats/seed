@@ -48,6 +48,20 @@ class SLClientEngine extends ClientEngine {
       let playerCar = this.gameEngine.world.getPlayerObject(this.playerId);
       if (playerCar != undefined)
       {
+/*
+<a-sphere color="tomato" depth="1" height="1" width="1" radius="0.25"
+dash-move-controls="type:line; raycastCamera: #orbit-camera"
+velocity-trail position="0 2 0">
+  <a-entity
+    id="fps-camera"
+    camera="enabled: false;">
+  </a-entity>
+</a-sphere>
+*/
+        let cam = document.createElement('a-entity');
+        cam.setAttribute('id', 'fps-camera');
+        cam.setAttribute('camera', 'enabled: false;');
+        playerCar.cameraEl.appendChild(cam);
         playerCar.renderEl.setAttribute('dash-move-controls', 'type:line; raycastCamera: #orbit-camera; maxLength: 200; dashLineLength: 15');
         this.connected = true;
       }

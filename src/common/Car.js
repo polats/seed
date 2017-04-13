@@ -29,8 +29,10 @@ class Car extends PhysicalObject {
         let scene = gameEngine.renderer ? gameEngine.renderer.scene : null;
         if (scene) {
             let elroot = document.createElement('a-entity');
+            let elcam = this.cameraEl = document.createElement('a-entity');
             let el = this.renderEl = document.createElement('a-sphere');
             elroot.appendChild(el);
+            elroot.appendChild(elcam);
             scene.appendChild(elroot);
             let p = this.position;
             let q = this.quaternion;
@@ -54,6 +56,16 @@ class Car extends PhysicalObject {
             // cameraObj.setAttribute('camera', '');
             // cameraObj.setAttribute('position', '0 0 0');
             // cameraObj.setAttribute('look-controls', '');
+        }
+    }
+
+    moveFPSCamera() {
+        let scene = this.gameEngine.renderer ? this.gameEngine.renderer.scene : null;
+
+        if (scene)
+        {
+          let position = this.renderEl.getAttribute('position');
+          this.cameraEl.setAttribute('position', position);
         }
     }
 
