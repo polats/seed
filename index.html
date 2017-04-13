@@ -129,11 +129,15 @@
 
         </a-scene>
 
+        <!--
         <div style="position:absolute; top:0; left:0; padding:12px;" >
             <button id="changeCamera">Change Camera</button>
         </div>
+      -->
 
         <script>
+            document.addEventListener('enter-vr', handleSwitchCamera);
+            document.addEventListener('exit-vr', handleSwitchCamera);
             document.addEventListener("DOMContentLoaded", function(event)
             {
                 var scene = document.querySelector('a-scene');
@@ -168,14 +172,22 @@
             {
                 var cam1 = document.querySelector('#fps-camera');
                 var cam2 = document.querySelector('#orbit-camera');
+                var player = document.querySelector('#player');
 
                 if( cam1.components.camera.data.active )
                 {
+                  if (event.type == 'exit-vr')
+                    document.querySelector('a-scene').exitVR();
+
                     cam2.setAttribute('camera', 'active', true);
+                    player.setAttribute('visible', true);
                 }
                 else
                 {
-                    cam1.setAttribute('camera', 'active', true);
+                  if (event.type == 'enter-vr')
+                    document.querySelector('a-scene').enterVR();
+                  cam1.setAttribute('camera', 'active', true);
+                  player.setAttribute('visible', false);
                 }
             }
         </script>

@@ -60,8 +60,9 @@ velocity-trail position="0 2 0">
 */
         let cam = document.createElement('a-entity');
         cam.setAttribute('id', 'fps-camera');
-        cam.setAttribute('camera', 'enabled: false;');
+        cam.setAttribute('camera', 'active', false);
         playerCar.cameraEl.appendChild(cam);
+        playerCar.renderEl.setAttribute('id', 'player');
         playerCar.renderEl.setAttribute('dash-move-controls', 'type:line; raycastCamera: #orbit-camera; maxLength: 200; dashLineLength: 15');
         this.connected = true;
       }
