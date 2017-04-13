@@ -73,7 +73,16 @@
                 camera
                 position="0 42 30" rotation="-65 0 0"
                 near="1000" far="4000" fov="2.2" user-height="0"
-                mouse-cursor="">
+                mouse-cursor=""
+                orbit-controls="
+                               autoRotate: false;
+                               target: #target;
+                               enableDamping: true;
+                               dampingFactor: 0.125;
+                               rotateSpeed:0.10;
+                               minDistance:3;
+                               maxDistance:100;"
+                >
             </a-entity>
 
             <a-entity id="target" width="120" depth="80" density="40" opacity="1" position="0 -3 0"></a-entity>
@@ -147,12 +156,12 @@
 
             function handleDragStart( event )
             {
-                console.log( "drag start" );
+              //  console.log( "drag start" );
             }
 
             function handleDragEnd( event )
             {
-                console.log( "drag end" );
+              //  console.log( "drag end" );
             }
 
             function handleSwitchCamera( event )
