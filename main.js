@@ -34,6 +34,7 @@ var fs = require('fs'),
 
 dotenv.config({silent: true});
 
+/*
 if (process.env.SSL_PORT) {
   new ProxyControlsServer({
     port: process.env.PORT,
@@ -46,3 +47,4 @@ if (process.env.SSL_PORT) {
     port: process.env.PORT || process.env.npm_package_config_port
   });
 }
+*/
