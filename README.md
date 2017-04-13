@@ -15,8 +15,15 @@ Agar.io and Slither.io showed the world that you don't need downloaded apps to p
 
 ## Thoughts on VR Game Development
 
-What's really holding VR back is the small addressable market -- people without VR headsets being unable to play. I believe Chrome + WebVR is the open platform that will allow VR to go mainstream.
+* What's really holding VR back is the small addressable market -- people without VR headsets being unable to play. I believe Chrome + WebVR is the open platform that will allow VR to go mainstream.
 
-Aside from presence via the VR headset, one thing that makes VR a unique and compelling platform is the higher fidelity of user input.  I've found that VR experiences aren't compelling because I play them with a headset on, but more so because of the level of agency that a VR controller provides. The moment I saw my hands in leap motion was more powerful than seeing the Oculus Rift Tuscany House for the first time.
 
-As I've discussed on [Medium](https://medium.com/@polats/adaptive-vr-game-design-the-case-for-a-standard-3dof-controller-5a55c8cde560), I believe there should be a controller that can be used for both VR and non-VR. Perhaps Google can make the Daydream Remote work officially on desktop, or maybe there could be a mouse add-on that adds gyroscope input. If this cross-platform solution becomes as ubiquitous as a mouse, people would be more inclined to both consume and produce VR content. 
+
+* Aside from presence via the VR headset, one thing that makes VR a unique and compelling platform is the higher fidelity of user input.  I've found that VR experiences aren't compelling because I play them with a headset on, but more so because of the level of agency that a VR controller provides. The moment I saw my hands in leap motion was more powerful than seeing the Oculus Rift Tuscany House for the first time.
+
+
+
+* I believe there should be a controller that can be used for both VR and non-VR. Perhaps Google can make the Daydream Remote work officially on desktop, or maybe there could be a mouse add-on that adds gyroscope input. If this cross-platform solution becomes as ubiquitous as a mouse, people would be more inclined to both consume and produce VR content.
+
+
+* More on [Medium](https://medium.com/@polats/adaptive-vr-game-design-the-case-for-a-standard-3dof-controller-5a55c8cde560)
