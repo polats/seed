@@ -11,7 +11,7 @@ Agar.io and Slither.io showed the world that you don't need downloaded apps to p
 * [A-Frame](https://aframe.io/) for WebVR development
 * [Lance.gg](http://lance.gg/) for multiplayer backend
 * [Proxycontrols.js](https://proxy-controls.donmccurdy.com/) and [webvr-remote](https://github.com/povdocs/webvr-remote) for mobile remote phone code
-* [Daydream-controller.js](https://github.com/mrdoob/daydream-controller.js/) for Dayream remote support
+* [Daydream-controller.js](https://github.com/mrdoob/daydream-controller.js/) for Daydream remote support
 * Assets from A-frame examples
 
 ### Aframe Components created for project:
