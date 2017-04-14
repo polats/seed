@@ -13,6 +13,10 @@ Agar.io and Slither.io showed the world that you don't need downloaded apps to p
 * [Proxycontrols.js](https://proxy-controls.donmccurdy.com/) and [webvr-remote](https://github.com/povdocs/webvr-remote) for mobile remote phone code
 * [Daydream-controller.js](https://github.com/mrdoob/daydream-controller.js/) for Dayream remote support
 
+### Aframe Components created for project:
+* [**Dash Move Controls**](https://github.com/polats/aframe-dash-move-controls-component) - allows mouse and daydream movement, adds velocity trails
+* [**Remote Phone Controls**](https://github.com/polats/aframe-remote-phone-controls-component) - based on Proxycontrols.js, allows mobile phone to be used as controller
+
 ## Thoughts on VR Game Development
 
 * What's really holding VR back is the small addressable market -- people without VR headsets being unable to play. I believe Chrome + WebVR is the open platform that will allow VR to go mainstream.
