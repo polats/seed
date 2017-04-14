@@ -8,6 +8,10 @@
         <script src="https://rawgit.com/polats/aframe-remote-phone-controls-component/master/dist/aframe-remote-phone-controls-component.min.js"></script>
         <script src="https://rawgit.com/polats/aframe-dash-move-controls-component/master/dist/aframe-dash-move-controls-component.js"></script>
         <script src="/vendor/aframe-orbit-controls-component.min.js"></script>
+        <script src="/vendor/three.min.js"></script>
+    		<script src="/vendor/MadgwickAHRS.js"></script>
+    		<script src="/vendor/DaydreamController.js"></script>
+
         <style>
           .intro-overlay {
             z-index: 1;
@@ -134,8 +138,12 @@
             <button id="changeCamera">Change Camera</button>
         </div>
       -->
+      <div style="position:absolute; top:0; left:0; padding:12px;" >
+          <button id="useRemote">Use Daydream Remote</button>
+      </div>
 
         <script>
+
             document.addEventListener('enter-vr', handleSwitchCamera);
             document.addEventListener('exit-vr', handleSwitchCamera);
             document.addEventListener("DOMContentLoaded", function(event)
@@ -155,8 +163,10 @@
                 document.querySelector('#orbit-camera').addEventListener('end-drag-orbit-controls', handleDragEnd );
 
                 // TOGGLE ORBIT AND STATIC CAMERA
-                document.querySelector('#changeCamera').addEventListener( 'click', handleSwitchCamera );
+                // document.querySelector('#changeCamera').addEventListener( 'click', handleSwitchCamera );
+                document.querySelector('#useRemote').addEventListener( 'click', useDaydreamRemote );
             }
+
 
             function handleDragStart( event )
             {
@@ -190,6 +200,12 @@
                   player.setAttribute('visible', false);
                 }
             }
+
+        function useDaydreamRemote( event )
+        {
+          var cam1 = document.querySelector('#fps-camera');
+          cam1.emit('connectRemote');
+        }
         </script>
 
         <div class="intro-overlay" style="display: none;">
